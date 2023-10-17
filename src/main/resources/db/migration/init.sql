@@ -13,8 +13,8 @@ create table events (
     id uuid not null,
     type varchar(100) not null,
     time timestamp not null,
-    bookid int not null, 
-    readerid int not null
+    bookid uuid not null,
+    readerid uuid not null
     );
 -- insert into readers (name, surname) values ('John', 'Snow'), ('Bilbo', 'Baggins');
 -- insert into books (title, author) values ('Witcher', 'Sapkovsky'), ('Hobbit', 'Tolkien');

@@ -15,3 +15,11 @@ public class LibraryApplication {
 	}
 
 }
+
+/* TODO:
+    - PopularSQL
+    - Exceptions
+    - DTO
+    - Base Interface (?)
+    - UI
+ */
