@@ -1,51 +1,64 @@
 package ru.kazakov.labaratory.library.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.kazakov.labaratory.library.entity.Reader;
-import ru.kazakov.labaratory.library.service.ReaderService;
+import ru.kazakov.labaratory.library.dto.ReaderDTO;
+import ru.kazakov.labaratory.library.dto.mapper.ReaderDTOMapper;
+import ru.kazakov.labaratory.library.service.implementation.ReaderServiceImpl;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.UUID;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/readers")
 public class ReadersController {
 
-    @Autowired
-    private ReaderService service;
+    private ReaderServiceImpl service;
+    private ReaderDTOMapper readerDTOMapper;
 
     @GetMapping
-    public Iterable<Reader> getReaderByTitleAndAuthor(@RequestParam(defaultValue = "") String name,
-                                                  @RequestParam(defaultValue = "") String surname)
+    public ResponseEntity<List<ReaderDTO>> getReaderByTitleAndAuthor(@RequestParam(defaultValue = "") String name,
+                                                                     @RequestParam(defaultValue = "") String surname)
     {
-        return service.getByNameAndSurname(name, surname);
+        return ResponseEntity.ok(
+                service.getByNameAndSurname(name, surname).stream().map(readerDTOMapper::apply).toList()
+        );
     }
     @GetMapping("/{id}")
-    public Optional<Reader> getReaderById(@PathVariable UUID id)
+    public ResponseEntity<ReaderDTO> getReaderById(@PathVariable UUID id)
     {
-        return service.getById(id);
+        return ResponseEntity.ok(
+                readerDTOMapper.apply(service.getById(id))
+        );
     }
 
     @GetMapping("/top")
-    public Optional<Reader> getTopReader(@RequestParam(defaultValue = "") String from,
+    public ResponseEntity<ReaderDTO> getTopReader(@RequestParam(defaultValue = "") String from,
                                          @RequestParam(defaultValue = "") String to)
     {
-        return service.getTop(from, to);
+        return ResponseEntity.ok(
+                readerDTOMapper.apply(service.getTop(from, to))
+        );
     }
     @PostMapping
-    public Reader addReader(@RequestParam String name,
+    public ResponseEntity<ReaderDTO> addReader(@RequestParam String name,
                         @RequestParam String surname)
     {
-        return service.add(name, surname);
+        return ResponseEntity.ok(
+                readerDTOMapper.apply(service.add(name, surname))
+        );
     }
 
     @PutMapping("/{id}")
-    public Reader editReader(@PathVariable UUID id,
+    public ResponseEntity<ReaderDTO> editReader(@PathVariable UUID id,
                          @RequestParam String name,
                          @RequestParam String surname)
     {
-        return service.edit(id, name, surname);
+        return ResponseEntity.ok(
+                readerDTOMapper.apply(service.edit(id, name, surname))
+        );
     }
 
     @DeleteMapping("/{id}")

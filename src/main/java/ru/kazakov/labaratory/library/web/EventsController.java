@@ -1,40 +1,51 @@
 package ru.kazakov.labaratory.library.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.kazakov.labaratory.library.entity.Event;
+import ru.kazakov.labaratory.library.dto.EventDTO;
+import ru.kazakov.labaratory.library.dto.mapper.EventDTOMapper;
 import ru.kazakov.labaratory.library.entity.EventType;
-import ru.kazakov.labaratory.library.service.EventService;
+import ru.kazakov.labaratory.library.service.implementation.EventServiceImpl;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.UUID;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/events")
 public class EventsController {
 
-    @Autowired
-    private EventService service;
+    private EventServiceImpl service;
+    private EventDTOMapper eventDTOMapper;
 
     @GetMapping
-    public Iterable<Event> getAllEvents() {
-        return service.getAll();
+    public ResponseEntity<List<EventDTO>> getAllEvents()
+    {
+        return ResponseEntity.ok(
+                service.getAll().stream().map(eventDTOMapper::apply).toList()
+        );
     }
 
     @GetMapping("/{id}")
-    public Optional<Event> getEventById(@PathVariable UUID id)
+    public ResponseEntity<EventDTO> getEventById(@PathVariable UUID id)
     {
-        return service.getById(id);
+        return ResponseEntity.ok(
+                eventDTOMapper.apply(service.getById(id))
+        );
     }
     @PostMapping
-    public Event addEvent(@RequestParam UUID bookid,
+    public ResponseEntity<EventDTO> addEvent(@RequestParam UUID bookid,
                           @RequestParam UUID readerid,
-                          @RequestParam EventType type) throws Exception {
-        return service.add(bookid, readerid, type);
+                          @RequestParam EventType type)
+    {
+        return ResponseEntity.ok(
+                eventDTOMapper.apply(service.add(bookid, readerid, type))
+        );
     }
 
     @DeleteMapping("/{id}")
-    public void deleteEvent(@PathVariable UUID id) throws Exception {
+    public void deleteEvent(@PathVariable UUID id) {
         service.delete(id);
     }
     
