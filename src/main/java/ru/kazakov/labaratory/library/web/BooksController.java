@@ -28,6 +28,13 @@ public class BooksController {
     {
         return service.getById(id);
     }
+
+    @GetMapping("/top")
+    public Optional<Book> getTopBook(@RequestParam(defaultValue = "") String from,
+                                     @RequestParam(defaultValue = "") String to) {
+        return service.getTop(from, to);
+    }
+
     @PostMapping
     public Book addBook(@RequestParam String title,
                         @RequestParam String author,
@@ -35,6 +42,8 @@ public class BooksController {
     {
         return service.add(title, author, quantity);
     }
+
+
 
     @PutMapping("/{id}")
     public Book editBook(@PathVariable UUID id,

@@ -3,8 +3,12 @@ package ru.kazakov.labaratory.library.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.kazakov.labaratory.library.domain.BookRepository;
+import ru.kazakov.labaratory.library.domain.EventRepository;
 import ru.kazakov.labaratory.library.entity.Book;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -12,6 +16,8 @@ import java.util.UUID;
 public class BookService {
     @Autowired
     private BookRepository bookRepository;
+    @Autowired
+    private EventRepository eventRepository;
     public Iterable<Book> getByTitleAndAuthor(String title, String author) {
         return bookRepository.findAllByTitleContainingAndAuthorContainingAllIgnoreCase(title, author);
     }
@@ -47,9 +53,9 @@ public class BookService {
         }
     }
 
-//    public Optional<Book> getTop(Timestamp from, Timestamp to) {
-////        return bookRepository.findTopBook(from, to);
-//    }
-
-
+    public Optional<Book> getTop(String from, String to) {
+        Timestamp f = Objects.equals(from, "") ? Timestamp.valueOf("1970-01-01 00:00:00") : Timestamp.valueOf(LocalDateTime.parse(from));
+        Timestamp t = Objects.equals(to, "") ? Timestamp.valueOf(LocalDateTime.now()) : Timestamp.valueOf(LocalDateTime.parse(to));
+        return bookRepository.findById(eventRepository.findTopBook(f, t).iterator().next());
+    }
 }

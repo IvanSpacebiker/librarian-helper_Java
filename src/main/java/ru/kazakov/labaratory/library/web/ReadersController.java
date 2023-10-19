@@ -26,6 +26,13 @@ public class ReadersController {
     {
         return service.getById(id);
     }
+
+    @GetMapping("/top")
+    public Optional<Reader> getTopReader(@RequestParam(defaultValue = "") String from,
+                                         @RequestParam(defaultValue = "") String to)
+    {
+        return service.getTop(from, to);
+    }
     @PostMapping
     public Reader addReader(@RequestParam String name,
                         @RequestParam String surname)

@@ -29,14 +29,12 @@ public class EventsController {
     @PostMapping
     public Event addEvent(@RequestParam UUID bookid,
                           @RequestParam UUID readerid,
-                          @RequestParam EventType type)
-    {
+                          @RequestParam EventType type) throws Exception {
         return service.add(bookid, readerid, type);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteEvent(@PathVariable UUID id)
-    {
+    public void deleteEvent(@PathVariable UUID id) throws Exception {
         service.delete(id);
     }
     
