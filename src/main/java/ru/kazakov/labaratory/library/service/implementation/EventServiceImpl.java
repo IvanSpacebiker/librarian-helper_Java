@@ -10,7 +10,6 @@ import ru.kazakov.labaratory.library.service.EventService;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -45,7 +44,7 @@ public class EventServiceImpl implements EventService {
         }
 
         Book book = bookRepository.findById(bookid).get();
-        if (book.getQuantity() == 0) throw new OutOfStockException("No book copies remained");
+        if (book.getQuantity() == 0 && type == EventType.TAKE) throw new OutOfStockException("No book copies remained");
         book.setQuantity(type == EventType.TAKE ? book.getQuantity() - 1 : book.getQuantity() + 1);
 
         return eventRepository.save(Event.builder()

@@ -13,7 +13,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -24,13 +23,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getByTitleAndAuthor(String title, String author) {
-        List<Book> list;
         return bookRepository.findAllByTitleContainingAndAuthorContainingAllIgnoreCase(title, author);
     }
 
     @Override
     public Book getById(UUID id) {
-        if (bookRepository.existsById(id)) {
+        if (!bookRepository.existsById(id)) {
             throw new NotFoundException("Book not found");
         }
         return bookRepository.findById(id).get();
@@ -40,13 +38,14 @@ public class BookServiceImpl implements BookService {
     public Book getTop(String from, String to) {
         Timestamp f = Objects.equals(from, "") ? Timestamp.valueOf("1970-01-01 00:00:00") : Timestamp.valueOf(LocalDateTime.parse(from));
         Timestamp t = Objects.equals(to, "") ? Timestamp.valueOf(LocalDateTime.now()) : Timestamp.valueOf(LocalDateTime.parse(to));
+        if (eventRepository.findTopBook(f, t).isEmpty()) throw new NotFoundException("Books not found");
         return bookRepository.findById(eventRepository.findTopBook(f, t).iterator().next()).get();
     }
 
     @Override
     public Book add(String title, String author, int quantity) throws AlreadyExistsException {
 
-        if (bookRepository.findBookByTitleAndAuthorAllIgnoreCase(title, author) == null) {
+        if (bookRepository.findBookByTitleAndAuthorAllIgnoreCase(title, author) != null) {
             throw new AlreadyExistsException("Book already exists");
         }
 
@@ -60,7 +59,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book edit(UUID id, String title, String author, int quantity) {
-        if (bookRepository.existsById(id)) {
+        if (!bookRepository.existsById(id)) {
             throw new NotFoundException("Book not found");
         }
         return bookRepository.save(Book.builder()

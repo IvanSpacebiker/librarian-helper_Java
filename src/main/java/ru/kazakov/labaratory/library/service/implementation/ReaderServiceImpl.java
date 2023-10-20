@@ -12,7 +12,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -39,6 +38,7 @@ public class ReaderServiceImpl implements ReaderService {
     public Reader getTop(String from, String to) {
         Timestamp f = Objects.equals(from, "") ? Timestamp.valueOf("1970-01-01 00:00:00") : Timestamp.valueOf(LocalDateTime.parse(from));
         Timestamp t = Objects.equals(to, "") ? Timestamp.valueOf(LocalDateTime.now()) : Timestamp.valueOf(LocalDateTime.parse(to));
+        if (eventRepository.findTopReader(f, t).isEmpty()) throw new NotFoundException("Readers not found");
         return readerRepository.findById(eventRepository.findTopReader(f, t).iterator().next()).get();
     }
 

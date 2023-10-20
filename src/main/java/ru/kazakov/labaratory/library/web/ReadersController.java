@@ -19,7 +19,7 @@ public class ReadersController {
     private ReaderDTOMapper readerDTOMapper;
 
     @GetMapping
-    public ResponseEntity<List<ReaderDTO>> getReaderByTitleAndAuthor(@RequestParam(defaultValue = "") String name,
+    public ResponseEntity<List<ReaderDTO>> getReaderByNameAndSurname(@RequestParam(defaultValue = "") String name,
                                                                      @RequestParam(defaultValue = "") String surname)
     {
         return ResponseEntity.ok(
