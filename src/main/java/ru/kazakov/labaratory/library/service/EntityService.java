@@ -1,6 +1,5 @@
 package ru.kazakov.labaratory.library.service;
 
-import java.util.Optional;
 import java.util.UUID;
 
 public interface EntityService<T> {

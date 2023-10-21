@@ -53,8 +53,8 @@ public class ReadersController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ReaderDTO> editReader(@PathVariable UUID id,
-                         @RequestParam String name,
-                         @RequestParam String surname)
+                         @RequestParam(defaultValue = "") String name,
+                         @RequestParam(defaultValue = "") String surname)
     {
         return ResponseEntity.ok(
                 readerDTOMapper.apply(service.edit(id, name, surname))

@@ -62,12 +62,13 @@ public class BookServiceImpl implements BookService {
         if (!bookRepository.existsById(id)) {
             throw new NotFoundException("Book not found");
         }
-        return bookRepository.save(Book.builder()
-                .id(id)
-                .title(title)
-                .author(author)
-                .quantity(quantity)
-                .build());
+
+        Book book = bookRepository.findById(id).get();
+        if (!Objects.equals(title, "")) book.setTitle(title);
+        if (!Objects.equals(author, "")) book.setAuthor(author);
+        if (quantity != -1) book.setQuantity(quantity);
+
+        return bookRepository.save(book);
 
     }
 

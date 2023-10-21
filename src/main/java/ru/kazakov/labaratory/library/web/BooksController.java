@@ -56,9 +56,9 @@ public class BooksController {
 
     @PutMapping("/{id}")
     public ResponseEntity<BookDTO> editBook(@PathVariable UUID id,
-                         @RequestParam String title,
-                         @RequestParam String author,
-                         @RequestParam int quantity)
+                         @RequestParam(defaultValue = "") String title,
+                         @RequestParam(defaultValue = "") String author,
+                         @RequestParam(defaultValue = "-1") int quantity)
     {
         return ResponseEntity.ok(
                 bookDTOMapper.apply(service.edit(id, title, author, quantity))

@@ -57,11 +57,12 @@ public class ReaderServiceImpl implements ReaderService {
         if (!readerRepository.existsById(id)) {
             throw new NotFoundException("Reader not found");
         }
-        return readerRepository.save(Reader.builder()
-                .id(id)
-                .name(name)
-                .surname(surname)
-                .build());
+
+        Reader reader = readerRepository.findById(id).get();
+        if (!Objects.equals(name, "")) reader.setName(name);
+        if (!Objects.equals(surname, "")) reader.setSurname(surname);
+
+        return readerRepository.save(reader);
     }
 
     @Override
