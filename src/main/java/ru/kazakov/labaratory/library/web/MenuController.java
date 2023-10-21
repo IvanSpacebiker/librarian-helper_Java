@@ -12,27 +12,15 @@ public class MenuController {
             <h1 id="-">Приложение-помощник библиотекаря</h1>
             <h2 id="-">Требуемое для запуска ПО</h2>
             <ul>
-            <li>Docker@^24.0.5</li>
-            <li><h2 id="-">Запуск приложения</h2>
-            </li>
-            <li><p>Открыть репозиторий через cmd</p>
-            </li>
-            <li><p>Установить требуемые зависимости</p>
-            <pre><code>npm <span class="hljs-keyword">install</span>
-            </code></pre></li>
-            <li><p>Запустить Docker</p>
-            <pre><code>docker compose up postgres <span class="hljs-_">-d</span>
-            </code></pre><p>Адрес - <strong>localhost:5432</strong>.</p>
-            </li>
+            <li>Docker@24.0.5</li>
+            <li>apache-maven@3.9.5 (переменная PATH должна содержать &quot;./apache-maven-3.9.5/bin&quot;)</li>
             </ul>
-            <p>Таблицы <strong>readers</strong> и <strong>books</strong> при инициализации имеют по 2 записи для проведения интеграционных тестов.</p>
-            <ol>
-            <li>Запустить сервер Node.js<pre><code><span class="hljs-keyword">node</span> <span class="hljs-title">bin</span>\\www
-            </code></pre>Адрес - <strong>localhost:3000</strong></li>
-            </ol>
-            <h2 id="-">Запуск интеграционных тестов</h2>
-            <p>Команда для запуска тестов:</p>
-            <pre><code>npm <span class="hljs-keyword">run</span><span class="bash"> <span class="hljs-built_in">test</span></span>
+            <h2 id="-">Запуск приложения</h2>
+            <p>Открыть в терминале папку <strong>./src/main/docker</strong> и выполнить команду:</p>
+            <pre><code><span class="hljs-attribute">docker-compose up</span>
+            </code></pre><h2 id="-">Запуск интеграционных тестов</h2>
+            <p>При запущенном приложении открыть в терминале папку <strong>./library</strong> и выполнить команду:</p>
+            <pre><code><span class="hljs-keyword">mvn </span>test
             </code></pre><h3 id="-">Описание тестов</h3>
             <ol>
             <li>Тесты книг и читателей<ol>

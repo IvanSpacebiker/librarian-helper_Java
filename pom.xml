@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>ru.kazakov.labaratory</groupId>
 	<artifactId>library</artifactId>
-	<version>0.1.0</version>
+	<version>1.0.0</version>
 	<name>library</name>
 	<description>Test task for Polytech&apos;s labaratory</description>
 	<properties>
@@ -25,13 +25,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -58,7 +56,12 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>5.9.2</version>
+			<scope>test</scope>
+		</dependency>
 
     </dependencies>
 
@@ -67,6 +70,11 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.2</version>
 			</plugin>
 		</plugins>
 	</build>
