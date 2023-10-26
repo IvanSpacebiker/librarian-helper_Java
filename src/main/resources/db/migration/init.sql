@@ -17,7 +17,7 @@ create table events (
     time timestamp not null,
     bookid uuid not null,
     readerid uuid not null,
-    primary key (id)
+    primary key (id),
+    foreign key (bookid) references books (id),
+    foreign key (readerid) references readers (id)
     );
--- insert into readers (name, surname) values ('John', 'Snow'), ('Bilbo', 'Baggins');
--- insert into books (title, author) values ('Witcher', 'Sapkovsky'), ('Hobbit', 'Tolkien');
